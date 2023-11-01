@@ -24,30 +24,41 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const handleRemoveCartItem = useCallback((productId: number) => {
-    const updatedCart = {
-      itemList: cart.itemList.filter((item) => item.productId !== productId),
-    };
-
-    setCart(updatedCart);
+    setCart((prevCart) => ({
+      ...prevCart,
+      itemList: prevCart.itemList.filter((item) => item.productId !== productId),
+    }));
   }, []);
 
   const handleAddCartItem = useCallback((newItem: CartItem) => {
-    const updatedCart = { ...cart };
-    const itemAlreadyOnCart = cart.itemList.some(
-      (item) => item.productId === newItem.productId
-    );
-
-    if (itemAlreadyOnCart) {
-      updatedCart.itemList = updateItemAmount(
-        updatedCart.itemList,
-        newItem.productId,
-        1
+    setCart((prevCart) => {
+      const itemAlreadyOnCart = prevCart.itemList.find(
+        (item) => item.productId === newItem.productId
       );
-    } else {
-      updatedCart.itemList.push(newItem);
-    }
-
-    setCart(updatedCart);
+  
+      if (itemAlreadyOnCart) {
+        // If the item already exists in the cart, create an updated copy of the cart
+        return {
+          ...prevCart,
+          itemList: prevCart.itemList.map((item) => {
+            if (item.productId === newItem.productId) {
+              // Update the quantity only for the corresponding item
+              return {
+                ...item,
+                amount: item.amount + newItem.amount,
+              };
+            }
+            return item;
+          }),
+        };
+      } else {
+        // If the item does not exist in the cart, add it
+        return {
+          ...prevCart,
+          itemList: [...prevCart.itemList, newItem],
+        };
+      }
+    });
   }, []);
 
   return (
