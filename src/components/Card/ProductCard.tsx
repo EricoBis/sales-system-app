@@ -1,4 +1,4 @@
-import { Product } from "@/app/utils/interface/Product";
+import { Product } from "@/utils/interface/Product";
 import {
   Card,
   CardHeader,

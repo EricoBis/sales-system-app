@@ -1,6 +1,6 @@
-import ProductCard from "./components/Card/ProductCard";
-import { getProducts } from "./services/Products/get-products";
-import { Product } from "./utils/interface/Product";
+import ProductCard from "../components/Card/ProductCard";
+import { getProducts } from "../services/Products/get-products";
+import { Product } from "../utils/interface/Product";
 
 export default async function Home() {
   const products = await getProducts();
