@@ -3,33 +3,32 @@ import { Cart, CartItem } from "@/app/utils/interface/Cart";
 
 type CartContextType = {
   cart: Cart;
+  handleRemoveCartItem: (id: number) => void;
+  handleAddCartItem: (newItem: CartItem) => void;
 };
 
 const CartContext = createContext<CartContextType>({
   cart: { itemList: [] },
+  handleRemoveCartItem: () => {},
+  handleAddCartItem: () => {},
 });
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
-
   const [cart, setCart] = useState<Cart>({ itemList: [] });
 
-  const handleCartChange = useCallback((cart: Cart) => {
-    setCart(cart);
-  }, []);
-
-  const updateItemAmount = (listToUpdate: CartItem[], idToUpdate: number, oper: number): CartItem[] => {
-    return listToUpdate.map(item => ({
-        ...item,
-        amount: item.productId === idToUpdate ? item.amount + oper : item.amount,
+  const updateItemAmount = ( listToUpdate: CartItem[], idToUpdate: number, oper: number): CartItem[] => {
+    return listToUpdate.map((item) => ({
+      ...item,
+      amount: item.productId === idToUpdate ? item.amount + oper : item.amount,
     }));
-  }
+  };
 
   const handleRemoveCartItem = useCallback((productId: number) => {
     const updatedCart = {
       itemList: cart.itemList.filter((item) => item.productId !== productId),
     };
 
-    handleCartChange(updatedCart);
+    setCart(updatedCart);
   }, []);
 
   const handleAddCartItem = useCallback((newItem: CartItem) => {
@@ -39,28 +38,27 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     );
 
     if (itemAlreadyOnCart) {
-        updatedCart.itemList = updateItemAmount(updatedCart.itemList, newItem.productId, 1);
+      updatedCart.itemList = updateItemAmount(
+        updatedCart.itemList,
+        newItem.productId,
+        1
+      );
     } else {
       updatedCart.itemList.push(newItem);
     }
 
-    handleCartChange(updatedCart);
+    setCart(updatedCart);
   }, []);
 
-  // const incrementCartItem = useCallback((id: number) => {
-  //   const updatedCart = { ...cart };
-  //   updatedCart.itemList = updateItemAmount(updatedCart.itemList, id, 1);
-  //   handleCartChange(updatedCart);
-  // }, [])
-
-  // const decrementCartItem = useCallback((id: number) => {
-  //   const updatedCart = { ...cart };
-  //   updatedCart.itemList = updateItemAmount(updatedCart.itemList, id, -1);
-  //   handleCartChange(updatedCart);
-  // }, [])
-
-
   return (
-    <CartContext.Provider value={{ cart }}>{children}</CartContext.Provider>
+    <CartContext.Provider
+      value={{
+        cart,
+        handleRemoveCartItem,
+        handleAddCartItem,
+      }}
+    >
+      {children}
+    </CartContext.Provider>
   );
 };
