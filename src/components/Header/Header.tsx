@@ -1,8 +1,29 @@
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Button } from "@nextui-org/react";
-import Link from "next/link";
+'use client';
 
+import {
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  Button,
+} from "@nextui-org/react";
+import Link from "next/link";
+import { CartContext } from "@/context/CartContext";
+
+import { CgProfile } from "react-icons/cg";
+import { FiShoppingCart } from "react-icons/fi";
+import { Badge } from "@nextui-org/react";
+import { useContext, useState, useEffect } from "react";
 
 function Header() {
+  const { cart } = useContext(CartContext);
+
+  const [isBadgeInvisible, setBadgeInvisible] = useState(true);
+
+  useEffect(() => {
+    setBadgeInvisible(cart.itemList.length > 0 ? false : true)
+  }, [cart]);
+
   return (
     <Navbar>
       <NavbarBrand>
@@ -21,9 +42,14 @@ function Header() {
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
-        </NavbarItem>
+        <Badge isInvisible={isBadgeInvisible} content={cart.itemList.length} shape="circle" color="danger">
+          <Button radius="full" isIconOnly variant="light">
+            <FiShoppingCart className="h-8 w-8" />
+          </Button>
+        </Badge>
+        <Button radius="full" isIconOnly variant="light">
+          <CgProfile className="h-8 w-8" />
+        </Button>
         <NavbarItem>
           <Button as={Link} color="primary" href="#" variant="flat">
             Sign Up

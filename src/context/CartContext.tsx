@@ -7,7 +7,7 @@ type CartContextType = {
   handleAddCartItem: (newItem: CartItem) => void;
 };
 
-const CartContext = createContext<CartContextType>({
+export const CartContext = createContext<CartContextType>({
   cart: { itemList: [] },
   handleRemoveCartItem: () => {},
   handleAddCartItem: () => {},

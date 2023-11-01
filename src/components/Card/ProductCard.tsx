@@ -1,3 +1,6 @@
+'use client';
+
+import { CartContext } from "@/context/CartContext";
 import { Product } from "@/utils/interface/Product";
 import {
   Card,
@@ -7,6 +10,7 @@ import {
   Image,
   Button,
 } from "@nextui-org/react";
+import { useContext } from "react";
 import { BsCart2 } from "react-icons/bs";
 
 interface CardProps {
@@ -14,7 +18,9 @@ interface CardProps {
 }
 
 function ProductCard(props: CardProps) {
-  const { description, price, image } = props.product;
+  const { id, description, price, image } = props.product;
+
+  const { handleAddCartItem } = useContext(CartContext);
 
   return (
     <Card className="cursor-pointer" shadow="sm" isHoverable={true}>
@@ -35,8 +41,8 @@ function ProductCard(props: CardProps) {
           <Button className="flex-grow hover:bg-sky-700" color="primary" variant="solid">
             Comprar
           </Button>
-          <Button className="flex-grow ml-2 hover:bg-zinc-200" isIconOnly={true} color="primary" variant="bordered">
-            <BsCart2 className="font-bold"/>
+          <Button onPress={() => handleAddCartItem({productId: id, amount:1})} className="flex-grow ml-2 hover:bg-zinc-200" isIconOnly={true} color="primary" variant="bordered">
+            <BsCart2 className="h-6 w-6"/>
           </Button>
         </div>
       </CardFooter>
