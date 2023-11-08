@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "../providers/providers";
 
 import Header from "../components/Header/Header";
+import ContentContainer from "@/components/Container/ContentContainer";
 
 export const metadata: Metadata = {
   title: "Lojinha",
@@ -21,7 +22,9 @@ export default function RootLayout({
         <Providers>
           <main className="text-foreground bg-background">
             <Header />
-            {children}
+            <ContentContainer>
+              {children}
+            </ContentContainer>
           </main>
         </Providers>
       </body>

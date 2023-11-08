@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   Navbar,
@@ -21,7 +21,7 @@ function Header() {
   const [isBadgeInvisible, setBadgeInvisible] = useState(true);
 
   useEffect(() => {
-    setBadgeInvisible(cart.itemList.length > 0 ? false : true)
+    setBadgeInvisible(cart.itemList.length > 0 ? false : true);
   }, [cart]);
 
   return (
@@ -36,14 +36,25 @@ function Header() {
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
-          <Link href="#" aria-current="page">
+          <Link href="/" aria-current="page">
             Products
           </Link>
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
-        <Badge isInvisible={isBadgeInvisible} content={cart.itemList.length} shape="circle" color="danger">
-          <Button radius="full" isIconOnly variant="light">
+        <Badge
+          isInvisible={isBadgeInvisible}
+          content={cart.itemList.length}
+          shape="circle"
+          color="danger"
+        >
+          <Button
+            href="/cart"
+            as={Link}
+            radius="full"
+            isIconOnly
+            variant="light"
+          >
             <FiShoppingCart className="h-8 w-8" />
           </Button>
         </Badge>
