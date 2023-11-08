@@ -1,7 +1,7 @@
 "use client";
 
+import { useContext } from "react";
 import { CartContext } from "@/context/CartContext";
-import { Product } from "@/utils/interface/Product";
 import {
   Card,
   CardBody,
@@ -10,8 +10,10 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
-import { useContext } from "react";
-import { BsCart2, BsFillCartCheckFill } from "react-icons/bs";
+
+import { Product } from "@/utils/interface/Product";
+import { BsCart2 } from "react-icons/bs";
+
 import ConfirmationModal from "./Modal/ConfirmationModal";
 
 interface CardProps {
@@ -20,6 +22,7 @@ interface CardProps {
 
 function ProductCard(props: CardProps) {
   const { id, description, price, image } = props.product;
+  
   const { handleAddCartItem } = useContext(CartContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -42,7 +45,7 @@ function ProductCard(props: CardProps) {
       </CardBody>
       <CardFooter className="flex flex-col justify-between items-start gap-3 text-small">
         <b>{description}</b>
-        <p className="text-green-600 font-medium">R$ {price}</p>
+        <p className="text-green-600 font-medium text-lg">R$ {price}</p>
         <div className="flex justify-between w-full">
           <Button
             className="flex-grow hover-bg-sky-700"
