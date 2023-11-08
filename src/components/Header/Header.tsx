@@ -63,7 +63,7 @@ function Header() {
         </Button>
         <NavbarItem>
           <Button as={Link} color="primary" href="#" variant="flat">
-            Sign Up
+            Sign In
           </Button>
         </NavbarItem>
       </NavbarContent>
