@@ -14,9 +14,12 @@ import { CgProfile } from "react-icons/cg";
 import { FiShoppingCart } from "react-icons/fi";
 import { Badge } from "@nextui-org/react";
 import { useContext, useState, useEffect } from "react";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 function Header() {
   const { cart } = useContext(CartContext);
+  const { data: session } = useSession();
+  console.log({ session });
 
   const [isBadgeInvisible, setBadgeInvisible] = useState(true);
 
@@ -62,9 +65,15 @@ function Header() {
           <CgProfile className="h-8 w-8" />
         </Button>
         <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
-            Sign In
-          </Button>
+          {session?.user ? (
+            <Button as={Link} href="" color="primary" variant="flat">
+              Sign Out
+            </Button>
+          ) : (
+            <Button as={Link} href="/api/auth/signin" color="primary" variant="flat">
+              Sign In
+            </Button>
+          )}
         </NavbarItem>
       </NavbarContent>
     </Navbar>
