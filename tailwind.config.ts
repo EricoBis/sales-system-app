@@ -14,7 +14,10 @@ const config: Config = {
     extend: {
       gridTemplateColumns: {
         'cardlist': 'repeat(auto-fill, minmax(230px, 1fr))',
-      }
+      },
+      height: {
+        '70vh': '70vh',
+      },
     },
   },
   darkMode: "class",
