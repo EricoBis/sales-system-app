@@ -12,9 +12,10 @@ import { CartContext } from "@/context/CartContext";
 
 import { CgProfile } from "react-icons/cg";
 import { FiShoppingCart } from "react-icons/fi";
+
 import { Badge } from "@nextui-org/react";
 import { useContext, useState, useEffect } from "react";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 function Header() {
   const { cart } = useContext(CartContext);
@@ -70,7 +71,12 @@ function Header() {
               Sign Out
             </Button>
           ) : (
-            <Button as={Link} href="/api/auth/signin" color="primary" variant="flat">
+            <Button
+              as={Link}
+              href="/api/auth/signin"
+              color="primary"
+              variant="flat"
+            >
               Sign In
             </Button>
           )}
