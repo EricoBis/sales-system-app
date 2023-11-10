@@ -1,6 +1,7 @@
 import React from "react";
-import { Image } from "@nextui-org/react";
+import { Divider, Image } from "@nextui-org/react";
 import { Product } from "@/utils/interface/Product";
+import { HiTrash } from "react-icons/hi";
 
 interface CartItemProps {
   product: Product | undefined;
@@ -11,25 +12,24 @@ function CartItem(props: CartItemProps) {
   const { product, amount } = props;
 
   return (
-    <div>
-      <div className="flex flex-col">
-        <Image
-          src={product ? product.image : ""}
-          alt={product ? product.description : "No description"}
-        />
-        <div>
-          <div>
-            <h3>
-              {product ? product.description : "No description available"}
-            </h3>
-            <p>{product ? `Price: ${product.price}` : "Price not available"}</p>
-          </div>
-          <div>
-            <p>{amount}</p>
-          </div>
+    <>
+      <Divider className="my-4" />
+      <div className="flex fle-row">
+        <div className="">
+          <Image
+            width={100}
+            src={product ? product.image : ""}
+            alt={product ? product.description : "No description"}
+          />
         </div>
+        <div className="ml-4">
+          <b>{product ? product.description : "No description available"}</b>
+          <p className="text-green-600 font-medium text-lg" >{product ? `R$${product.price}` : "Price not available"}</p>
+          <p>{amount}</p>
+        </div>
+        <HiTrash className="text-red-500" />
       </div>
-    </div>
+    </>
   );
 }
 

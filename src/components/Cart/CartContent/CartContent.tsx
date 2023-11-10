@@ -31,7 +31,6 @@ function CartContent() {
               <BsCart2 className="h-6 w-6" />
               <h1 className="ml-4 font-bold text-large">Meu carrinho</h1>
             </div>
-            <Divider className="my-4" />
           </CardHeader>
           <CardBody className="overflow-visible py-2">
             {cart.itemList &&
