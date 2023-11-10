@@ -5,6 +5,8 @@ import { Providers } from "../providers/providers";
 
 import Header from "../components/Header/Header";
 import ContentContainer from "@/components/Container/ContentContainer";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 export const metadata: Metadata = {
   title: "Lojinha",
@@ -23,7 +25,7 @@ export default function RootLayout({
           <main className="text-foreground bg-background">
             <Header />
             <ContentContainer>
-              {children}
+              <Suspense fallback={<Loading />}>{children}</Suspense>
             </ContentContainer>
           </main>
         </Providers>
