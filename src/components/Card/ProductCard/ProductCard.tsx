@@ -15,6 +15,7 @@ import { Product } from "@/utils/interface/Product";
 import { BsCart2 } from "react-icons/bs";
 
 import ConfirmationModal from "./Modal/ConfirmationModal";
+import ImageLoader from "./ImageLoader";
 
 interface CardProps {
   product: Product;
@@ -33,15 +34,8 @@ function ProductCard(props: CardProps) {
 
   return (
     <Card className="cursor-pointer" shadow="sm" isHoverable={true}>
-      <CardBody className="flex justify-center items-center overflow-visible p-0">
-        <Image
-          shadow="sm"
-          radius="lg"
-          width="80%"
-          alt={description}
-          className="w-full object-cover"
-          src={image}
-        />
+      <CardBody className="flex justify-center items-center overflow-visible p-0 mt-5">
+        <ImageLoader imageUrl={image} alt={description} />
       </CardBody>
       <CardFooter className="flex flex-col justify-between items-start gap-3 text-small">
         <b>{description}</b>
