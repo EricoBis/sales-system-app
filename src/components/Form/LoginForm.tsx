@@ -1,19 +1,51 @@
-import React from "react";
+'use client';
+
+import React, { useState } from "react";
 import { Card, Spacer, Button, Input, Divider } from "@nextui-org/react";
 import { HiOutlineMail, HiOutlineLockClosed } from "react-icons/hi";
 import Image from 'next/image'
-import logo from "../../../public/lojinha_logo.svg";
+import logo from "/public/lojinha_logo.svg";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (res && res.error) {
+        setError("Invalid Credentials");
+        return;
+      }
+
+      router.replace("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <div>
-      <div className="flex items-center justify-center min-h-unit-10">
+      <form onSubmit={handleSubmit} className="flex items-center justify-center min-h-unit-10">
         <Card className="w-full max-w-md p-5 sm:p-20">
           <div className="flex flex-col items-center">
           <Image src={logo} width={80} height={80} alt="Logo da loja" />
           <h1 className="text-left text-large font-bold mb-10 mt-5">Login - Lojinha</h1>
           </div>
           <Input
+            onChange={(e) => setEmail(e.target.value)}
             size="lg"
             type="email"
             label="Email"
@@ -25,6 +57,7 @@ export default function Login() {
           />
           <Spacer y={1} />
           <Input
+            onChange={(e) => setPassword(e.target.value)}
             size="lg"
             type="password"
             label="Senha"
@@ -34,7 +67,7 @@ export default function Login() {
             }
           />
           <Spacer y={5} />
-          <Button size="lg" color="primary">
+          <Button type="submit" size="lg" color="primary">
             Fazer login
           </Button>
           <Divider className="my-4" />
@@ -46,7 +79,6 @@ export default function Login() {
             Registrar-se
           </Button>
         </Card>
-      </div>
-    </div>
+      </form>
   );
 }

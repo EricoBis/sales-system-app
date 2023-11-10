@@ -15,7 +15,7 @@ import { FiShoppingCart } from "react-icons/fi";
 
 import { Badge } from "@nextui-org/react";
 import { useContext, useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 function Header() {
   const { cart } = useContext(CartContext);
@@ -67,7 +67,12 @@ function Header() {
         </Button>
         <NavbarItem>
           {session?.user ? (
-            <Button as={Link} href="" color="primary" variant="flat">
+            <Button
+              onPress={() => signOut()}
+              href=""
+              color="primary"
+              variant="flat"
+            >
               Sign Out
             </Button>
           ) : (
