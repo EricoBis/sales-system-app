@@ -6,16 +6,15 @@ import {
   Card,
   CardBody,
   CardFooter,
-  Image,
   Button,
   useDisclosure,
 } from "@nextui-org/react";
 
-import { Product } from "@/utils/interface/Product";
 import { BsCart2 } from "react-icons/bs";
 
 import ConfirmationModal from "./Modal/ConfirmationModal";
 import ImageLoader from "./ImageLoader";
+import { Product } from "@/types/Product";
 
 interface CardProps {
   product: Product;

@@ -5,8 +5,8 @@ import { BsCart2 } from "react-icons/bs";
 
 import { CartContext } from "@/context/CartContext";
 import { getCartProducts } from "@/services/Products/get-cart-product";
-import { Product } from "@/utils/interface/Product";
 import CartItem from "../CartItem/CartItem";
+import { Product } from "@/types/Product";
 
 function CartContent() {
   const { cart } = useContext(CartContext);

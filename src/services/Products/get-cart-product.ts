@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { Cart } from '@/utils/interface/Cart';
-import { Product } from '@/utils/interface/Product';
+import { Cart } from '@/types/Cart';
+import { Product } from '@/types/Product';
 
 
 export async function getCartProducts(cart: Cart): Promise<Product[]> {

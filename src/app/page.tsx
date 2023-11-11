@@ -1,6 +1,6 @@
 import ProductCard from "../components/Card/ProductCard/ProductCard";
 import { getProducts } from "../services/Products/get-all-products";
-import { Product } from "../utils/interface/Product";
+import { Product } from "../types/Product";
 
 export default async function Home() {
   

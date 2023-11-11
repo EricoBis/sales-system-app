@@ -1,7 +1,7 @@
 import React from "react";
 import { Divider, Image } from "@nextui-org/react";
-import { Product } from "@/utils/interface/Product";
 import { HiTrash } from "react-icons/hi";
+import { Product } from "@/types/Product";
 
 interface CartItemProps {
   product: Product | undefined;
