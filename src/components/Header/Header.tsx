@@ -12,10 +12,13 @@ import { CartContext } from "@/context/CartContext";
 
 import { CgProfile } from "react-icons/cg";
 import { FiShoppingCart } from "react-icons/fi";
+import { IoBagHandle } from "react-icons/io5";
+import  logo  from "/public/lojinha_logo.png";
 
 import { Badge } from "@nextui-org/react";
 import { useContext, useState, useEffect } from "react";
 import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 
 function Header() {
   const { cart } = useContext(CartContext);
@@ -31,17 +34,22 @@ function Header() {
   return (
     <Navbar>
       <NavbarBrand>
-        <p className="font-bold text-inherit">Lojinha</p>
+        <Link href="/">
+        <div className="flex flex-row items-center gap-2">
+          <Image className="w-8 h-8" src={logo} alt={"Logo Lojinha"} />
+          <p className="font-bold text-inherit">Lojinha</p>
+        </div>
+        </Link>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
           <Link color="foreground" href="#">
-            Features
+            Novidades
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
           <Link href="/" aria-current="page">
-            Products
+            Produtos
           </Link>
         </NavbarItem>
       </NavbarContent>

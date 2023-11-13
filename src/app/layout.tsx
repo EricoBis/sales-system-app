@@ -20,6 +20,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="light">
+      <head>
+        <link rel='icon' href='/lojinha_logo.ico'/>
+      </head>
       <body>
         <Providers>
           <main className="text-foreground bg-background">
