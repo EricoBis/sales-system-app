@@ -3,20 +3,24 @@ import { getProducts } from "@/services/Products/get-all-products";
 import { Product } from "@/types/Product";
 import React from "react";
 
-const chooseRandomProducts = (products: Product[], n: number): Product[] => {
-  const arrayClone = [...products];
-  const result: Product[] = [];
-
-  for (let i = 0; i < n && arrayClone.length > 0; i++) {
-    const randomIndex = Math.floor(Math.random() * arrayClone.length);
-    const chosenProduct = arrayClone.splice(randomIndex, 1)[0];
-    result.push(chosenProduct);
-  }
-
-  return result;
-};
 
 export default async function CartRecommendation() {
+
+  const chooseRandomProducts = (products: Product[], n: number): Product[] => {
+    const result: Product[] = [];
+    if(!products) return result;
+  
+    const arrayClone = [...products];
+  
+    for (let i = 0; i < n && arrayClone.length > 0; i++) {
+      const randomIndex = Math.floor(Math.random() * arrayClone.length);
+      const chosenProduct = arrayClone.splice(randomIndex, 1)[0];
+      result.push(chosenProduct);
+    }
+  
+    return result;
+  };
+  
   const products = await getProducts();
   const randomProducts = chooseRandomProducts(products, 6);
 
