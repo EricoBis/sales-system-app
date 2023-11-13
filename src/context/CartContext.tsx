@@ -1,17 +1,20 @@
 import { createContext, useCallback, useState } from "react";
 import { Cart, CartItem } from "@/types/Cart";
 
-
 type CartContextType = {
   cart: Cart;
   handleRemoveCartItem: (id: number) => void;
   handleAddCartItem: (newItem: CartItem) => void;
+  handleIncrementCartItem: (id: number) => void;
+  handleDecrementCartItem: (id: number) => void;
 };
 
 export const CartContext = createContext<CartContextType>({
   cart: { itemList: [] },
   handleRemoveCartItem: () => {},
   handleAddCartItem: () => {},
+  handleIncrementCartItem: () => {},
+  handleDecrementCartItem: () => {},
 });
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
@@ -20,11 +23,13 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const updateItemAmount = (
     listToUpdate: CartItem[],
     idToUpdate: number,
-    oper: number
+    amount: number
   ): CartItem[] => {
     return listToUpdate.map((item) => ({
       ...item,
-      amount: item.productId === idToUpdate ? item.amount + oper : item.amount,
+      amount: item.productId === idToUpdate
+        ? Math.max(item.amount + amount, 0)  // Ensure the amount is non-negative
+        : item.amount,
     }));
   };
 
@@ -44,18 +49,37 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
       );
 
       if (itemAlreadyOnCart) {
-        // If the item already exists in the cart, create an updated copy of the cart
         return {
           ...prevCart,
           itemList: updateItemAmount(prevCart.itemList, newItem.productId, 1),
         };
       } else {
-        // If the item does not exist in the cart, add it
         return {
           ...prevCart,
           itemList: [...prevCart.itemList, newItem],
         };
       }
+    });
+  }, []);
+
+  const handleIncrementCartItem = useCallback((productId: number) => {
+    setCart((prevCart) => ({
+      ...prevCart,
+      itemList: updateItemAmount(prevCart.itemList, productId, 1),
+    }));
+  }, []);
+
+  const handleDecrementCartItem = useCallback((productId: number) => {
+    setCart((prevCart) => {
+      const updatedItemList = updateItemAmount(prevCart.itemList, productId, -1);
+  
+      // Remove the item if the quantity reaches 0
+      const updatedCart = {
+        ...prevCart,
+        itemList: updatedItemList.filter(item => item.amount > 0),
+      };
+  
+      return updatedCart;
     });
   }, []);
 
@@ -65,6 +89,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         cart,
         handleRemoveCartItem,
         handleAddCartItem,
+        handleIncrementCartItem,
+        handleDecrementCartItem,
       }}
     >
       {children}
