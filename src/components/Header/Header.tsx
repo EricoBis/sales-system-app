@@ -10,15 +10,14 @@ import {
 import Link from "next/link";
 import { CartContext } from "@/context/CartContext";
 
-import { CgProfile } from "react-icons/cg";
 import { FiShoppingCart } from "react-icons/fi";
-import { IoBagHandle } from "react-icons/io5";
-import  logo  from "/public/lojinha_logo.png";
+import logo from "/public/lojinha_logo.png";
 
 import { Badge } from "@nextui-org/react";
 import { useContext, useState, useEffect } from "react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import UserPopover from "./UserPopover";
 
 function Header() {
   const { cart } = useContext(CartContext);
@@ -35,10 +34,10 @@ function Header() {
     <Navbar>
       <NavbarBrand>
         <Link href="/">
-        <div className="flex flex-row items-center gap-2">
-          <Image className="w-8 h-8" src={logo} alt={"Logo Lojinha"} />
-          <p className="font-bold text-inherit">Lojinha</p>
-        </div>
+          <div className="flex flex-row items-center gap-2">
+            <Image className="w-8 h-8" src={logo} alt={"Logo Lojinha"} />
+            <p className="font-bold text-inherit">Lojinha</p>
+          </div>
         </Link>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
@@ -70,19 +69,10 @@ function Header() {
             <FiShoppingCart className="h-8 w-8" />
           </Button>
         </Badge>
-        <Button radius="full" isIconOnly variant="light">
-          <CgProfile className="h-8 w-8" />
-        </Button>
+
         <NavbarItem>
           {session?.user ? (
-            <Button
-              onPress={() => signOut()}
-              href=""
-              color="primary"
-              variant="flat"
-            >
-              Sign Out
-            </Button>
+            <UserPopover />
           ) : (
             <Button
               as={Link}
@@ -90,7 +80,7 @@ function Header() {
               color="primary"
               variant="flat"
             >
-              Sign In
+              Login
             </Button>
           )}
         </NavbarItem>
