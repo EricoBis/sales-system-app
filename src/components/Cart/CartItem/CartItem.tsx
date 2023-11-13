@@ -4,7 +4,8 @@ import React, { useContext } from "react";
 import { CartContext } from "@/context/CartContext";
 import { Product } from "@/types/Product";
 
-import { Button, Divider, Image } from "@nextui-org/react";
+import RemoveItemModal from "./Modal/RemoveItemModal";
+import { Button, Divider, Image, useDisclosure } from "@nextui-org/react";
 import { HiTrash } from "react-icons/hi";
 import { BiPlus, BiMinus } from "react-icons/bi";
 
@@ -15,8 +16,18 @@ interface CartItemProps {
 
 function CartItem(props: CartItemProps) {
   const { product, amount } = props;
-  const { handleIncrementCartItem, handleDecrementCartItem } =
+  const { handleIncrementCartItem, handleDecrementCartItem, handleRemoveCartItem } =
     useContext(CartContext);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleDecrementItemBtn = () => {
+    if (amount - 1 <= 0) onOpen();
+    else if (product) handleDecrementCartItem(product.id);
+  };
+
+  const removeCartItem = () => {
+    if(product) handleRemoveCartItem(product.id)
+  }
 
   return (
     <>
@@ -44,7 +55,7 @@ function CartItem(props: CartItemProps) {
                 isIconOnly
                 size="sm"
                 radius="full"
-                onPress={() => product && handleDecrementCartItem(product.id)}
+                onPress={() => handleDecrementItemBtn()}
               >
                 <BiMinus className="w-4 h-4" />
               </Button>
@@ -65,10 +76,12 @@ function CartItem(props: CartItemProps) {
           color="default"
           variant="bordered"
           endContent={<HiTrash className="text-gray-500 h-4 w-4" />}
+          onPress={() => onOpen()}
         >
           Remover
         </Button>
       </div>
+      <RemoveItemModal isOpen={isOpen} onClose={onClose} removeCartItem={removeCartItem} />
     </>
   );
 }

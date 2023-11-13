@@ -36,7 +36,7 @@ function CartContent() {
             {cart.itemList &&
               cart.itemList.map((item) => {
                 const currProduct = getCurrProductOnList(item.productId);                 
-                return <CartItem product={currProduct} amount={item.amount}/>
+                return <CartItem key={currProduct?.id} product={currProduct} amount={item.amount}/>
               })}
           </CardBody>
         </Card>
