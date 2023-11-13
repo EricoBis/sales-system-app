@@ -33,7 +33,7 @@ function CartItem(props: CartItemProps) {
     <>
       <Divider className="my-4" />
       <div className="flex flex-row justify-between">
-        <div className="flex fle-row">
+        <div className="flex fle-row ml-2">
           <>
             <Image
               width={100}
