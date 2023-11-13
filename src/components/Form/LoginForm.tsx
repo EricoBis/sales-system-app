@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Spacer, Button, Input, Divider } from "@nextui-org/react";
 import { HiOutlineMail, HiOutlineLockClosed } from "react-icons/hi";
 import Image from "next/image";
@@ -8,6 +8,7 @@ import logo from "/public/lojinha_logo.svg";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Error from "./Error";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -15,6 +16,10 @@ export default function Login() {
   const [error, setError] = useState("");
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (error) setError("");
+  }, [email, password]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,7 +32,7 @@ export default function Login() {
       });
 
       if (res && res.error) {
-        setError("Invalid Credentials");
+        setError("Email ou senha incorretos");
         return;
       }
 
@@ -76,6 +81,12 @@ export default function Login() {
         <Button type="submit" size="lg" color="primary">
           Fazer login
         </Button>
+        {error && (
+          <>
+          <Spacer y={4} />
+            <Error message={error} />
+          </>
+        )}
         <Divider className="my-4" />
         <p className="text-center text-gray-600 text-sm">
           Ainda não tem uma conta?
