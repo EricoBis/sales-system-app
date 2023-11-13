@@ -15,6 +15,7 @@ import { BsCart2 } from "react-icons/bs";
 import ConfirmationModal from "./Modal/ConfirmationModal";
 import ImageLoader from "./ImageLoader";
 import { Product } from "@/types/Product";
+import Link from "next/link";
 
 interface CardProps {
   product: Product;
@@ -22,7 +23,7 @@ interface CardProps {
 
 function ProductCard(props: CardProps) {
   const { id, description, price, image } = props.product;
-  
+
   const { handleAddCartItem } = useContext(CartContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -30,6 +31,10 @@ function ProductCard(props: CardProps) {
     handleAddCartItem({ productId: id, amount: 1 });
     onOpen();
   };
+
+  const handleBuyButton = () => {
+    handleAddCartItem({ productId: id, amount: 1 });
+  }
 
   return (
     <Card className="cursor-pointer" shadow="sm" isHoverable={true}>
@@ -41,6 +46,9 @@ function ProductCard(props: CardProps) {
         <p className="text-green-600 font-medium text-lg">R$ {price}</p>
         <div className="flex justify-between w-full">
           <Button
+            onPress={() => handleBuyButton()}
+            href="/cart"
+            as={Link}
             className="flex-grow hover-bg-sky-700"
             color="primary"
             variant="solid"

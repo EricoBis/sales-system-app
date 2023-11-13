@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Modal,
   ModalContent,
@@ -8,13 +8,17 @@ import {
   Button,
 } from "@nextui-org/react";
 import { BsFillCartCheckFill } from "react-icons/bs";
+import Link from "next/link";
 
 interface ConfirmationModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ isOpen, onClose }) => {
+const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
+  isOpen,
+  onClose,
+}) => {
   return (
     <Modal backdrop={"blur"} isOpen={isOpen} onClose={onClose}>
       <ModalContent>
@@ -28,7 +32,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ isOpen, onClose }
           <Button color="primary" variant="bordered" onPress={onClose}>
             Continuar comprando
           </Button>
-          <Button color="primary" onPress={onClose}>
+          <Button href="/cart" as={Link} color="primary" onPress={onClose}>
             Finalizar compra
           </Button>
         </ModalFooter>

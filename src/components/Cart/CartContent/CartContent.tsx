@@ -34,9 +34,9 @@ function CartContent() {
           </CardHeader>
           <CardBody className="overflow-visible py-2">
             {cart.itemList &&
-              cart.itemList.map((item) => {
+              cart.itemList.map((item, index) => {
                 const currProduct = getCurrProductOnList(item.productId);                 
-                return <CartItem key={currProduct?.id} product={currProduct} amount={item.amount}/>
+                return <CartItem key={index} product={currProduct} amount={item.amount}/>
               })}
           </CardBody>
         </Card>
