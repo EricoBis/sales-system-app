@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import api from "@/services/api";
 import { Card, Spacer, Button, Input, Divider } from "@nextui-org/react";
 import { HiOutlineMail, HiOutlineLockClosed, HiUser } from "react-icons/hi";
 import Image from "next/image";
@@ -29,28 +30,33 @@ function RegisterForm() {
       return;
     }
 
-    try {
-      const res = await fetch("http://localhost:8080/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+    await api
+      .post(
+        "/auth/register",
+        {
           name: name,
           email: email,
           password: password,
-        }),
-      });
-
-      if (res.ok) {
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then(function (response) {
         router.push("api/auth/signin");
-      } else {
-        setError("Usuário com este email já existe");
-      }
-    } catch (error) {
-      setError("Erro durante o registro");
-      console.log("Error during registration: ", error);
-    }
+      })
+      .catch(function (error) {
+        if (error.response) {;
+          setError("Usuário com este email já existe");
+        } else if (error.request) {
+          console.log("Error during registration: ", error);
+          setError("Erro durante o registro");
+        } else {
+          console.log("Unexpected error: ", error);
+        }
+      });
   };
 
   return (
@@ -104,7 +110,7 @@ function RegisterForm() {
         </Button>
         {error && (
           <>
-          <Spacer y={4} />
+            <Spacer y={4} />
             <Error message={error} />
           </>
         )}

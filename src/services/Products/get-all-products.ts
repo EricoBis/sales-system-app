@@ -1,9 +1,9 @@
-import axios from 'axios';
+import api from '../api';
 
 export async function getProducts() {
 
     try {
-        const response = await axios.get('http://localhost:8080/products');
+        const response = await api.get('/products');
         return response?.data || [];
     } catch (error) {
         console.error(error);
