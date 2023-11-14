@@ -14,7 +14,7 @@ interface CartItemProps {
   amount: number;
 }
 
-function CartItem(props: CartItemProps) {
+function CartItemCard(props: CartItemProps) {
   const { product, amount } = props;
   const { handleIncrementCartItem, handleDecrementCartItem, handleRemoveCartItem } =
     useContext(CartContext);
@@ -86,4 +86,4 @@ function CartItem(props: CartItemProps) {
   );
 }
 
-export default CartItem;
+export default CartItemCard;
