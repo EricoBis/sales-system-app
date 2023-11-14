@@ -15,7 +15,7 @@ import logo from "/public/lojinha_logo.png";
 
 import { Badge } from "@nextui-org/react";
 import { useContext, useState, useEffect } from "react";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import UserPopover from "./UserPopover";
 
@@ -53,23 +53,6 @@ function Header() {
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
-        <Badge
-          isInvisible={isBadgeInvisible}
-          content={cart.itemList.length}
-          shape="circle"
-          color="danger"
-        >
-          <Button
-            href="/cart"
-            as={Link}
-            radius="full"
-            isIconOnly
-            variant="light"
-          >
-            <FiShoppingCart className="h-8 w-8" />
-          </Button>
-        </Badge>
-
         <NavbarItem>
           {session?.user ? (
             <UserPopover />
@@ -83,6 +66,24 @@ function Header() {
               Login
             </Button>
           )}
+        </NavbarItem>
+        <NavbarItem>
+          <Badge
+            isInvisible={isBadgeInvisible}
+            content={cart.itemList.length}
+            shape="circle"
+            color="danger"
+          >
+            <Button
+              href="/cart"
+              as={Link}
+              radius="full"
+              isIconOnly
+              variant="light"
+            >
+              <FiShoppingCart className="h-8 w-8" />
+            </Button>
+          </Badge>
         </NavbarItem>
       </NavbarContent>
     </Navbar>
