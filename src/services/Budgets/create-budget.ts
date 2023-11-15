@@ -1,25 +1,25 @@
-import { Cart } from '@/types/Cart';
 import api from '../api';
-import { useSession } from 'next-auth/react';
+import { AxiosResponse } from 'axios';
+import { Budget } from '@/types/Budget';
+import { Cart } from '@/types/Cart';
+import { User } from '@/types/User';
 
-export async function createBudget(cart: Cart) {
+export async function createBudget(cart: Cart, user: User): Promise<Budget> {
 
-    const { data: session } = useSession();
-
-    await api
+    const response = await api
         .post("/budgets", {
-            "clientId": session?.user.id,
+            "clientId": user.id,
             "itemList": cart.itemList
         },
             {
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": session?.user.token
+                    "Authorization": user.token
                 },
             }
-        ).then(function (response) {
-            return response.data;
-        }).catch(function (error) {
+        ).catch(function (error) {
             console.log(error);
-        });
+        }) as AxiosResponse;
+
+    return response.data as Budget;
 }
