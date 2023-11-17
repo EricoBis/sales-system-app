@@ -8,14 +8,20 @@ import { CartContext } from "@/context/CartContext";
 import { getCartProducts } from "@/services/Products/get-cart-product";
 import { Product } from "@/types/Product";
 import { CartItem } from "@/types/Cart";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { createBudget } from "@/services/Budgets/create-budget";
 
 function CartContent() {
-  const { cart } = useContext(CartContext);
+  const { cart, clearCart } = useContext(CartContext);
   const [cartProducts, setCartProducts] = useState<Product[]>([]);
   const [orderValue, setOrderValue] = useState<number>(0);
 
+  const { data: session } = useSession();
+  const router = useRouter();
+
   useEffect(() => {
-    getCartProducts(cart).then((products) => {
+    getCartProducts(cart.itemList).then((products) => {
       setCartProducts(products);
     });
   }, [cart]);
@@ -33,6 +39,16 @@ function CartContent() {
       const currProduct = getCurrProductOnList(item.productId);
       return currProduct ? total + item.amount * currProduct.price : total;
     }, 0);
+  };
+
+  const handleProceedToCheckout = async () => {
+    if (session?.user) {
+      await createBudget(cart, session.user).then((budget) => {
+        clearCart();
+      })
+      router.push("/cart/checkout")
+    }
+    else router.push("api/auth/signin");
   };
 
   return (
@@ -73,10 +89,17 @@ function CartContent() {
                 currency: "BRL",
               })}
             </p>
-            <Button className="text-base font-extrabold" color="primary">
+            <Button
+              onPress={handleProceedToCheckout}
+              className="text-base font-extrabold"
+              color="primary"
+            >
               Solicitar Orçamento
             </Button>
-            <p className="text-tiny text-center text-slate-500 mt-2">Verifique em detalhes o valor final incluindo impostos e descontos na próxima etapa.</p>
+            <p className="text-tiny text-center text-slate-500 mt-2">
+              Verifique em detalhes o valor final incluindo impostos e descontos
+              na próxima etapa.
+            </p>
           </CardBody>
         </Card>
       </div>

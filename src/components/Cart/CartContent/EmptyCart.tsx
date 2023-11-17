@@ -2,7 +2,6 @@ import { Button } from "@nextui-org/react";
 import Link from "next/link";
 import React from "react";
 import { BsCartFill } from "react-icons/bs";
-import CartRecommendation from "./CartRecommendation";
 
 function EmptyCart() {
   return (
@@ -14,7 +13,6 @@ function EmptyCart() {
           Continuar explorando
         </Button>
       </div>
-      <CartRecommendation />
     </>
   );
 }

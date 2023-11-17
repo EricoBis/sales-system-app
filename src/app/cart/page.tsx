@@ -1,12 +1,8 @@
-"use client";
+import React from "react";
+import Cart from "@/components/Cart/Cart";
 
-import React, { useContext } from "react";
-import CartContent from "@/components/Cart/CartContent/CartContent";
-import EmptyCart from "@/components/Cart/CartContent/EmptyCart";
-import { CartContext } from "@/context/CartContext";
-
-export default function page() {
-  const { cart } = useContext(CartContext);
-
-  return <>{cart.itemList.length === 0 ? <EmptyCart /> : <CartContent />}</>;
+function page() {
+  return <Cart />;
 }
+
+export default page;
