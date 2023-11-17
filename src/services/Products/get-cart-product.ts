@@ -1,12 +1,12 @@
 import api from '../api';
-import { Cart } from '@/types/Cart';
+import { CartItem } from '@/types/Cart';
 import { Product } from '@/types/Product';
 
 
-export async function getCartProducts(cart: Cart): Promise<Product[]> {
+export async function getCartProducts(items: CartItem[]): Promise<Product[]> {
 
-  const productPromises = cart.itemList.map(async (cartItem) => {
-    const productId = cartItem.productId;
+  const productPromises = items.map(async (item) => {
+    const productId = item.productId;
     try {
       const response = await api.get(`/products/${productId}`);
       return response.data;
