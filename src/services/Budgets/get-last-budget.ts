@@ -3,10 +3,10 @@ import { AxiosResponse } from 'axios';
 import { Budget } from '@/types/Budget';
 import { User } from '@/types/User';
 
-export async function getBudget(orderId: number, user: User): Promise<Budget> {
+export async function getLastBudget(user: User): Promise<Budget> {
 
     const response = await api
-        .get(`/budgets/${orderId}`,
+        .get(`/clients/${user.id}/budgets/last`,
             {
                 headers: {
                     "Content-Type": "application/json",
