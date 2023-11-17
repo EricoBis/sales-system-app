@@ -9,6 +9,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Error from "./Error";
+import SuccessAlert from "../Alert/SuccessAlert";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,6 +17,10 @@ export default function Login() {
   const [error, setError] = useState("");
 
   const router = useRouter();
+
+  useEffect(() => {
+    localStorage.removeItem('showAlert');
+  }, []);
 
   useEffect(() => {
     if (error) setError("");
@@ -43,6 +48,7 @@ export default function Login() {
   };
 
   return (
+    <>
     <form
       onSubmit={handleSubmit}
       className="flex items-center justify-center min-h-unit-10"
@@ -97,5 +103,10 @@ export default function Login() {
         </Button>
       </Card>
     </form>
+    
+    {localStorage.getItem('showAlert') === 'true' && (
+      <SuccessAlert message="Usuário registrado com sucesso!" />
+    )}
+    </>
   );
 }

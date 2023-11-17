@@ -15,7 +15,7 @@ function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
+  
   const router = useRouter();
 
   useEffect(() => {
@@ -45,6 +45,7 @@ function RegisterForm() {
         }
       )
       .then(function (response) {
+        localStorage.setItem('showAlert', 'true');
         router.push("api/auth/signin");
       })
       .catch(function (error) {
