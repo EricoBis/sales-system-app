@@ -7,6 +7,8 @@ type CartContextType = {
   handleAddCartItem: (newItem: CartItem) => void;
   handleIncrementCartItem: (id: number) => void;
   handleDecrementCartItem: (id: number) => void;
+  isCartEmpty: () => boolean;
+  clearCart: () => void;
 };
 
 export const CartContext = createContext<CartContextType>({
@@ -15,6 +17,8 @@ export const CartContext = createContext<CartContextType>({
   handleAddCartItem: () => {},
   handleIncrementCartItem: () => {},
   handleDecrementCartItem: () => {},
+  isCartEmpty: () => false,
+  clearCart: () => {}
 });
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
@@ -83,6 +87,14 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     });
   }, []);
 
+  const isCartEmpty = useCallback((): boolean => {
+    return cart.itemList.length === 0;
+  }, [cart.itemList]);
+
+  const clearCart = (): void => {
+    setCart({ itemList: [] }); 
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -91,6 +103,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         handleAddCartItem,
         handleIncrementCartItem,
         handleDecrementCartItem,
+        isCartEmpty,
+        clearCart
       }}
     >
       {children}
