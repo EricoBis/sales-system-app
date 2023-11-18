@@ -1,6 +1,6 @@
 import api from '../api';
-import { CartItem } from '@/types/Cart';
-import { Product } from '@/types/Product';
+import { CartItem } from '@/utils/types/Cart';
+import { Product } from '@/utils/types/Product';
 
 
 export async function getCartProducts(items: CartItem[]): Promise<Product[]> {

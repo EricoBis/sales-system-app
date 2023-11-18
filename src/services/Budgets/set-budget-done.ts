@@ -1,11 +1,8 @@
 import api from '../api';
-import { AxiosResponse } from 'axios';
-import { Budget } from '@/types/Budget';
-import { User } from '@/types/User';
+import { User } from '@/utils/types/User';
 
-export async function setBudgetDone(orderId: number, user: User): Promise<Budget> {
-
-    const response = await api
+export async function setBudgetDone(orderId: number, user: User) {
+    await api
         .put(`/budgets/${orderId}`,
             {
                 headers: {
@@ -13,9 +10,16 @@ export async function setBudgetDone(orderId: number, user: User): Promise<Budget
                     "Authorization": user.token
                 },
             }
-        ).catch(function (error) {
-            console.log(error);
-        }) as AxiosResponse
-
-    return response.data as Budget;
+        ).then(function (response) {
+            return response.data;
+        }).catch(function (error) {
+            if (error.response) {
+                throw new Error(error.response.data);
+            }
+            else {
+                console.log(error.message);
+            }
+        })
 }
+
+

@@ -1,8 +1,8 @@
 import api from '../api';
 import { AxiosResponse } from 'axios';
-import { Budget } from '@/types/Budget';
-import { Cart } from '@/types/Cart';
-import { User } from '@/types/User';
+import { Budget } from '@/utils/types/Budget';
+import { Cart } from '@/utils/types/Cart';
+import { User } from '@/utils/types/User';
 
 export async function createBudget(cart: Cart, user: User): Promise<Budget> {
 
