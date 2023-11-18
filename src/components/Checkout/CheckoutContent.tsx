@@ -13,6 +13,7 @@ import { formatValue } from "@/utils/functions/formatting";
 import { CartContext } from "@/context/CartContext";
 import { getCurrProductOnList } from "@/utils/functions/getProductOnList";
 import Link from "next/link";
+import SuccessAlert from "../Alert/SuccessAlert";
 
 interface CheckoutContentProps {
   user: User;
@@ -27,11 +28,12 @@ function CheckoutContent({ user }: CheckoutContentProps) {
   const router = useRouter();
 
   useEffect(() => {
+    localStorage.removeItem("showAlert");
     clearCart();
     const fetchData = async () => {
       return await getLastBudget(user);
-    }
-    if(user) fetchData().then(budget => setBudget(budget));
+    };
+    if (user) fetchData().then((budget) => setBudget(budget));
   }, []);
 
   useEffect(() => {
@@ -43,16 +45,16 @@ function CheckoutContent({ user }: CheckoutContentProps) {
 
   const handleFinalizeOrder = async () => {
     setIsBtnLoading(true);
-    if(user && budget) {
+    if (user && budget) {
       try {
-         await setBudgetDone(budget.orderId, user);
-         router.replace(`/cart/checkout/receipt/${budget.orderId}`);
+        await setBudgetDone(budget.orderId, user);
+        router.replace(`/cart/checkout/receipt/${budget.orderId}`);
       } catch (error) {
         localStorage.setItem("checkout_error", (error as Error).message);
         router.replace(`/cart/checkout/receipt/${budget.orderId}`);
       }
     }
-  }
+  };
 
   return (
     <>
@@ -67,20 +69,23 @@ function CheckoutContent({ user }: CheckoutContentProps) {
                 </div>
               </CardHeader>
               <CardBody className="overflow-visible py-2">
-                <Divider/>
+                <Divider />
                 <div className="flex flex-row gap-2 ml-4 mt-6">
-                {budget.items &&
-                  budget.items.map((item, index) => {
-                    const currProduct = getCurrProductOnList(item.productId, cartProducts);
-                    return (
-                      <CheckoutItemCard
-                        key={index}
-                        product={currProduct}
-                        amount={item.amount}
-                      />
-                    );
-                  })}
-                  </div>
+                  {budget.items &&
+                    budget.items.map((item, index) => {
+                      const currProduct = getCurrProductOnList(
+                        item.productId,
+                        cartProducts
+                      );
+                      return (
+                        <CheckoutItemCard
+                          key={index}
+                          product={currProduct}
+                          amount={item.amount}
+                        />
+                      );
+                    })}
+                </div>
               </CardBody>
             </Card>
           </div>
@@ -113,17 +118,28 @@ function CheckoutContent({ user }: CheckoutContentProps) {
                 >
                   Efetivar compra
                 </Button>
-                <Button as={Link} href="/" className="text-base font-bold text-slate-500 mt-1" variant="bordered">
+                <Button
+                  as={Link}
+                  href="/"
+                  className="text-base font-bold text-slate-500 mt-1"
+                  variant="bordered"
+                >
                   Efetivar mais tarde
                 </Button>
                 <p className="text-tiny text-center text-slate-500 mt-2">
-              A compra ficará disponível em "Meus Pedidos" por um tempo limitado até ser efetivada.
-            </p>
+                  A compra ficará disponível em "Meus Pedidos" por um tempo
+                  limitado até ser efetivada.
+                </p>
               </CardBody>
             </Card>
           </div>
         </div>
       )}
+
+      {localStorage.getItem("showAlert") &&
+        localStorage.getItem("showAlert") === "true" && (
+          <SuccessAlert message="Orçamento registrado com sucesso!" />
+        )}
     </>
   );
 }

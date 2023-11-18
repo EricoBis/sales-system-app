@@ -6,7 +6,7 @@ import CheckoutContent from "./CheckoutContent";
 import { Button } from "@nextui-org/react";
 import Link from "next/link";
 
-async function Checkout() {
+function Checkout() {
   const { data: session } = useSession();
 
   if (session) {
