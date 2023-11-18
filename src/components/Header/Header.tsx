@@ -22,7 +22,6 @@ import UserPopover from "./UserPopover";
 function Header() {
   const { cart } = useContext(CartContext);
   const { data: session } = useSession();
-  console.log({ session });
 
   const [isBadgeInvisible, setBadgeInvisible] = useState(true);
 

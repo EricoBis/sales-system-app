@@ -14,7 +14,7 @@ export default function Cart() {
       {isCartEmpty() ? (
         <>
           <EmptyCart />
-          {/* <CartRecommendation /> */}
+          <CartRecommendation />
         </>
       ) : (
         <CartContent />

@@ -44,6 +44,7 @@ function CartContent() {
     setIsBtnLoading(true);
     if (session?.user) {
        await createBudget(cart, session.user).then(() => {
+        localStorage.setItem('showAlert', 'true');
         router.push("/cart/checkout");
       })
     }

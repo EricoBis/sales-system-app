@@ -1,10 +1,11 @@
 import ProductCard from "@/components/Card/Product/ProductCard";
 import { getProducts } from "@/services/Products/get-all-products";
 import { Product } from "@/utils/types/Product";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 
-export default async function CartRecommendation() {
+export default function CartRecommendation() {
+  const [randomProducts, setRandomProducts] = useState<Product[]>();
 
   const chooseRandomProducts = (products: Product[], n: number): Product[] => {
     const result: Product[] = [];
@@ -21,14 +22,18 @@ export default async function CartRecommendation() {
     return result;
   };
   
-  const products = await getProducts();
-  const randomProducts = chooseRandomProducts(products, 6);
+  useEffect(() => {
+    const fetchData = async () => {
+      return await getProducts();
+    }
+    fetchData().then(products => setRandomProducts(chooseRandomProducts(products, 6)));
+  }, [])
 
   return (
     <>
       <h1 className="font-bold mb-5">Você vai adorar</h1>
       <div className="gap-8 grid sm:grid-cols-cardlist">
-        {products &&
+        {randomProducts &&
           randomProducts.map((product: Product) => (
             <ProductCard key={product.id} product={product} />
           ))}
