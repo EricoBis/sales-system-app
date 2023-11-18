@@ -35,7 +35,7 @@ function UserPopover() {
         <div className="w-52 px-2 py-3">
           <p className="text-small font-bold">Olá, {fullName}</p>
           <Divider className="my-2" />
-          <Link color="foreground" href="#">
+          <Link color="foreground" href="/orders">
             <div className="flex flex-row items-center gap-1 text-base">
               <LuPackage />
               <p>Meus Pedidos</p>

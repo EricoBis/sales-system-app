@@ -14,7 +14,7 @@ import { BsCart2 } from "react-icons/bs";
 
 import ConfirmationModal from "./Modal/ConfirmationModal";
 import ImageLoader from "./ImageLoader";
-import { Product } from "@/types/Product";
+import { Product } from "@/utils/types/Product";
 import Link from "next/link";
 
 interface CardProps {

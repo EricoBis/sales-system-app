@@ -2,7 +2,7 @@
 
 import React, { useContext } from "react";
 import { CartContext } from "@/context/CartContext";
-import { Product } from "@/types/Product";
+import { Product } from "@/utils/types/Product";
 
 import RemoveItemModal from "./Modal/RemoveItemModal";
 import { Button, Divider, Image, useDisclosure } from "@nextui-org/react";

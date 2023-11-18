@@ -6,16 +6,19 @@ import { BsCart2 } from "react-icons/bs";
 
 import { CartContext } from "@/context/CartContext";
 import { getCartProducts } from "@/services/Products/get-cart-product";
-import { Product } from "@/types/Product";
-import { CartItem } from "@/types/Cart";
+import { Product } from "@/utils/types/Product";
+import { CartItem } from "@/utils/types/Cart";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { createBudget } from "@/services/Budgets/create-budget";
+import { formatValue } from "@/utils/functions/formatting";
+import { getCurrProductOnList } from "@/utils/functions/getProductOnList";
 
 function CartContent() {
-  const { cart, clearCart } = useContext(CartContext);
+  const { cart } = useContext(CartContext);
   const [cartProducts, setCartProducts] = useState<Product[]>([]);
   const [orderValue, setOrderValue] = useState<number>(0);
+  const [isBtnLoading, setIsBtnLoading] = useState(false);
 
   const { data: session } = useSession();
   const router = useRouter();
@@ -30,23 +33,19 @@ function CartContent() {
     setOrderValue(getOrderValue(cart.itemList));
   }, [cart, cartProducts]);
 
-  const getCurrProductOnList = (id: number): Product | undefined => {
-    return cartProducts.find((product) => product.id === id);
-  };
-
   const getOrderValue = (itemList: CartItem[]): number => {
     return itemList.reduce((total, item) => {
-      const currProduct = getCurrProductOnList(item.productId);
+      const currProduct = getCurrProductOnList(item.productId, cartProducts);
       return currProduct ? total + item.amount * currProduct.price : total;
     }, 0);
   };
 
   const handleProceedToCheckout = async () => {
+    setIsBtnLoading(true);
     if (session?.user) {
-      await createBudget(cart, session.user).then((budget) => {
-        clearCart();
+       await createBudget(cart, session.user).then(() => {
+        router.push("/cart/checkout");
       })
-      router.push("/cart/checkout")
     }
     else router.push("api/auth/signin");
   };
@@ -64,7 +63,7 @@ function CartContent() {
           <CardBody className="overflow-visible py-2">
             {cart.itemList &&
               cart.itemList.map((item, index) => {
-                const currProduct = getCurrProductOnList(item.productId);
+                const currProduct = getCurrProductOnList(item.productId, cartProducts);
                 return (
                   <CartItemCard
                     key={index}
@@ -84,12 +83,10 @@ function CartContent() {
           <CardBody>
             <Divider />
             <p className="text-2xl text-right my-3 mr-4">
-              {orderValue.toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-              })}
+              {formatValue(orderValue)}
             </p>
             <Button
+              isLoading={isBtnLoading}
               onPress={handleProceedToCheckout}
               className="text-base font-extrabold"
               color="primary"

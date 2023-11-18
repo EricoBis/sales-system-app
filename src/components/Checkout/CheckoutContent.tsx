@@ -1,25 +1,37 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Card, CardHeader, CardBody, Divider, Button } from "@nextui-org/react";
 import { getLastBudget } from "@/services/Budgets/get-last-budget";
-import { User } from "@/types/User";
-import { Product } from "@/types/Product";
+import { User } from "@/utils/types/User";
+import { Product } from "@/utils/types/Product";
 import { getCartProducts } from "@/services/Products/get-cart-product";
 import CheckoutItemCard from "./CheckoutItemCard";
-import { Budget } from "@/types/Budget";
+import { Budget } from "@/utils/types/Budget";
 import { LuPackage } from "react-icons/lu";
+import { setBudgetDone } from "@/services/Budgets/set-budget-done";
+import { useRouter } from "next/navigation";
+import { formatValue } from "@/utils/functions/formatting";
+import { CartContext } from "@/context/CartContext";
+import { getCurrProductOnList } from "@/utils/functions/getProductOnList";
+import Link from "next/link";
 
 interface CheckoutContentProps {
   user: User;
 }
 
 function CheckoutContent({ user }: CheckoutContentProps) {
+  const { clearCart } = useContext(CartContext);
   const [cartProducts, setCartProducts] = useState<Product[]>([]);
   const [budget, setBudget] = useState<Budget>();
+  const [isBtnLoading, setIsBtnLoading] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
-    getLastBudget(user).then((budget) => {
-      setBudget(budget);
-    });
+    clearCart();
+    const fetchData = async () => {
+      return await getLastBudget(user);
+    }
+    if(user) fetchData().then(budget => setBudget(budget));
   }, []);
 
   useEffect(() => {
@@ -29,16 +41,18 @@ function CheckoutContent({ user }: CheckoutContentProps) {
       });
   }, [budget]);
 
-  const formatValue = (value: number): string => {
-    return value.toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    });
-  };
-
-  const getCurrProductOnList = (id: number): Product | undefined => {
-    return cartProducts.find((product) => product.id === id);
-  };
+  const handleFinalizeOrder = async () => {
+    setIsBtnLoading(true);
+    if(user && budget) {
+      try {
+         await setBudgetDone(budget.orderId, user);
+         router.replace(`/cart/checkout/receipt/${budget.orderId}`);
+      } catch (error) {
+        localStorage.setItem("checkout_error", (error as Error).message);
+        router.replace(`/cart/checkout/receipt/${budget.orderId}`);
+      }
+    }
+  }
 
   return (
     <>
@@ -57,7 +71,7 @@ function CheckoutContent({ user }: CheckoutContentProps) {
                 <div className="flex flex-row gap-2 ml-4 mt-6">
                 {budget.items &&
                   budget.items.map((item, index) => {
-                    const currProduct = getCurrProductOnList(item.productId);
+                    const currProduct = getCurrProductOnList(item.productId, cartProducts);
                     return (
                       <CheckoutItemCard
                         key={index}
@@ -80,6 +94,9 @@ function CheckoutContent({ user }: CheckoutContentProps) {
               <CardBody>
                 <Divider />
                 <p className="text-base text-gray-500 text-right mt-3 mb-1 mr-4">
+                  {`Total produtos: ${formatValue(budget.orderCost)}`}
+                </p>
+                <p className="text-base text-gray-500 text-right my-1 mr-4">
                   {`Imposto: ${formatValue(budget.taxCost)}`}
                 </p>
                 <p className="text-base text-gray-500 text-right my-1 mr-4">
@@ -89,12 +106,19 @@ function CheckoutContent({ user }: CheckoutContentProps) {
                   {`Valor total: ${formatValue(budget.totalCost)}`}
                 </p>
                 <Button
-                  // onPress={handleProceedToCheckout}
+                  isLoading={isBtnLoading}
+                  onPress={handleFinalizeOrder}
                   className="text-base font-extrabold"
                   color="primary"
                 >
-                  Efetivar Compra
+                  Efetivar compra
                 </Button>
+                <Button as={Link} href="/" className="text-base font-bold text-slate-500 mt-1" variant="bordered">
+                  Efetivar mais tarde
+                </Button>
+                <p className="text-tiny text-center text-slate-500 mt-2">
+              A compra ficará disponível em "Meus Pedidos" por um tempo limitado até ser efetivada.
+            </p>
               </CardBody>
             </Card>
           </div>

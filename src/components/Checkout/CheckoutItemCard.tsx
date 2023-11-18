@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
-import { Product } from "@/types/Product";
+import { Product } from "@/utils/types/Product";
 
 interface CheckoutItemProps {
   product: Product | undefined;
@@ -9,7 +9,7 @@ interface CheckoutItemProps {
 
 function CheckoutItem({ product, amount }: CheckoutItemProps) {
   return (
-    <Card shadow="sm" isPressable onPress={() => console.log("item pressed")}>
+    <Card shadow="sm">
       <CardBody className="overflow-visible p-0">
         <Image
           shadow="sm"
