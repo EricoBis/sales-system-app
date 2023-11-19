@@ -28,7 +28,7 @@ function OrdersContent({ user }: OrdersContentProps) {
     const fetchData = async () => {
       return await getAllBudgets(user);
     };
-    if (user) fetchData().then((budget) => setBudgetList(budget.reverse()));
+    if (user) fetchData().then((budget) => setBudgetList(budget));
   }, []);
 
   const handleFinalizeOrder = async (orderId: number) => {
