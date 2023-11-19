@@ -56,7 +56,7 @@ function AccordionItemContent({
             className="mt-4"
             color="primary"
           >
-            Efetivar Venda
+            Efetivar pedido
           </Button>
         )}
       </div>
