@@ -1,15 +1,15 @@
-"use client";
-
 import React from "react";
 import { useSession } from "next-auth/react";
 import CheckoutContent from "./CheckoutContent";
 import { Button } from "@nextui-org/react";
 import Link from "next/link";
+import { getServerSession } from "next-auth";
+import { authConfig } from "@/lib/auth";
 
-function Checkout() {
-  const { data: session } = useSession();
+async function Checkout() {
+  const session = await getServerSession(authConfig);
 
-  if (session) {
+  if (session?.user) {
     return (
       <>
         <CheckoutContent user={session.user} />

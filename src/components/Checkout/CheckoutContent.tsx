@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useContext, useEffect, useState } from "react";
 import { Card, CardHeader, CardBody, Divider, Button } from "@nextui-org/react";
 import { getLastBudget } from "@/services/Budgets/get-last-budget";
