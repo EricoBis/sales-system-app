@@ -2,19 +2,17 @@ import React from "react";
 import Link from "next/link";
 import {
   Card,
-  CardHeader,
   Divider,
   CardBody,
   CardFooter,
   Button,
 } from "@nextui-org/react";
-import { FaRegCheckCircle } from "react-icons/fa";
-import { VscError } from "react-icons/vsc";
 import { getBudget } from "@/services/Budgets/get-budget";
 import { getCartProducts } from "@/services/Products/get-cart-product";
 import { getCurrProductOnList } from "@/utils/functions/getProductOnList";
 import { getServerSession } from "next-auth";
 import { authConfig, loginIsRequiredServer } from "@/lib/auth";
+import OrderStatus from "./OrderStatus";
 
 interface ReceiptProps {
   order: string;
@@ -31,39 +29,11 @@ async function Receipt({ order }: ReceiptProps) {
   const budget = await getBudget(order, session.user);
   const products = await getCartProducts(budget.items);
 
-
-  const getOrderStatus = () => {
-    if (budget?.done) {
-      return (
-        <CardHeader className="flex gap-3 bg-green-200">
-          <div className="flex flex-row items-center">
-            <FaRegCheckCircle className="text-green-700" />
-            <p className="text-lg text-green-700 ml-2">
-              Compra efetivada com Sucesso!
-            </p>
-          </div>
-        </CardHeader>
-      );
-    } else {
-      const error =
-        localStorage.getItem("checkout_error") ||
-        "Não foi possível efetivar a venda!";
-      return (
-        <CardHeader className="flex gap-3 bg-red-200">
-          <div className="flex flex-row items-center">
-            <VscError className="text-red-700" />
-            <p className="text-lg text-red-700 ml-2">{error}</p>
-          </div>
-        </CardHeader>
-      );
-    }
-  };
-
   return (
     <div className="flex items-center justify-center h-screen relative translate-y-[-150px]">
       {budget && (
         <Card className="max-w-[500px]">
-          {getOrderStatus()}
+          <OrderStatus isBudgetDone={budget.done}/>
           <Divider />
           <CardBody>
             <p>Pedido #{budget?.orderId}</p>
