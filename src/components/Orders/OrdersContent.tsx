@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Budget } from "@/utils/types/Budget";
+"use client";
+
+import React from "react";
 import { User } from "@/utils/types/User";
 import { getAllBudgets } from "@/services/Budgets/get-all-client-budgets";
 import {
@@ -12,37 +13,14 @@ import {
 import { FaRegCheckCircle } from "react-icons/fa";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { LuPackage } from "react-icons/lu";
-import { setBudgetDone } from "@/services/Budgets/set-budget-done";
-import { useRouter } from "next/navigation";
 import AccordionItemContent from "./AccordionItemContent";
+import { Budget } from "@/utils/types/Budget";
 
 interface OrdersContentProps {
-  user: User;
+  budgetList: Budget[];
 }
 
-function OrdersContent({ user }: OrdersContentProps) {
-  const [budgetList, setBudgetList] = useState<Budget[]>([]);
-  const router = useRouter();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      return await getAllBudgets(user);
-    };
-    if (user) fetchData().then((budget) => setBudgetList(budget.reverse()));
-  }, []);
-
-  const handleFinalizeOrder = async (orderId: number) => {
-    if (user) {
-      try {
-        await setBudgetDone(orderId, user);
-        router.replace(`/cart/checkout/receipt/${orderId}`);
-      } catch (error) {
-        localStorage.setItem("checkout_error", (error as Error).message);
-        router.replace(`/cart/checkout/receipt/${orderId}`);
-      }
-    }
-  };
-
+async function OrdersContent({ budgetList }: OrdersContentProps) {
   const getChipStatus = (isBudgetDone: boolean) => {
     return isBudgetDone ? (
       <Chip
@@ -67,7 +45,7 @@ function OrdersContent({ user }: OrdersContentProps) {
 
   return (
     <>
-      {budgetList.length !== 0 ? (
+      {budgetList.length > 0 ? (
         <div className="grid grid-cols-1 gap-4 items-start justify-center mx-auto max-w-4xl">
           <div className="flex flex-row align-middle">
             <LuPackage className="w-8 h-8" />
@@ -81,10 +59,7 @@ function OrdersContent({ user }: OrdersContentProps) {
                   subtitle={getChipStatus(budget.done)}
                   title={`Pedido: #${budget.orderId}`}
                 >
-                  <AccordionItemContent
-                    budget={budget}
-                    finalizeOrder={handleFinalizeOrder}
-                  />
+                  <AccordionItemContent budget={budget} />
                 </AccordionItem>
               ))}
           </Accordion>
