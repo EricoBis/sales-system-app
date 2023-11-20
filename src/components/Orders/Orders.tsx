@@ -13,7 +13,7 @@ async function Orders() {
     const budgetList = await getAllBudgets(session.user);
     return (
       <>
-        <OrdersContent budgetList={budgetList.reverse()} />
+        <OrdersContent budgetList={budgetList} />
       </>
     );
   }
