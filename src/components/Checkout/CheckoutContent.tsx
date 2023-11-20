@@ -15,7 +15,6 @@ import { formatValue } from "@/utils/functions/formatting";
 import { CartContext } from "@/context/CartContext";
 import { getCurrProductOnList } from "@/utils/functions/getProductOnList";
 import Link from "next/link";
-import SuccessAlert from "../Alert/SuccessAlert";
 
 interface CheckoutContentProps {
   user: User;
@@ -30,7 +29,6 @@ function CheckoutContent({ user }: CheckoutContentProps) {
   const router = useRouter();
 
   useEffect(() => {
-    localStorage.removeItem("showAlert");
     clearCart();
     const fetchData = async () => {
       return await getLastBudget(user);
@@ -137,11 +135,6 @@ function CheckoutContent({ user }: CheckoutContentProps) {
           </div>
         </div>
       )}
-
-      {localStorage.getItem("showAlert") &&
-        localStorage.getItem("showAlert") === "true" && (
-          <SuccessAlert message="Orçamento registrado com sucesso!" />
-        )}
     </>
   );
 }
