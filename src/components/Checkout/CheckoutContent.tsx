@@ -48,10 +48,9 @@ function CheckoutContent({ user }: CheckoutContentProps) {
     if (user && budget) {
       try {
         await setBudgetDone(budget.orderId, user);
-        router.replace(`/cart/checkout/receipt/${budget.orderId}`);
+        router.replace(`/cart/checkout/receipt/${budget.orderId}/success`);
       } catch (error) {
-        localStorage.setItem("checkout_error", (error as Error).message);
-        router.replace(`/cart/checkout/receipt/${budget.orderId}`);
+        router.replace(`/cart/checkout/receipt/${budget.orderId}/${encodeURIComponent((error as Error).message)}`);
       }
     }
   };

@@ -17,10 +17,9 @@ function FinalizeOrderButton({ orderId }: FinalizeOrderButtonProps) {
     if (session?.user) {
       try {
         await setBudgetDone(orderId, session.user);
-        router.replace(`/cart/checkout/receipt/${orderId}`);
+        router.replace(`/cart/checkout/receipt/${orderId}/success`);
       } catch (error) {
-        localStorage.setItem("checkout_error", (error as Error).message);
-        router.replace(`/cart/checkout/receipt/${orderId}`);
+        router.replace(`/cart/checkout/receipt/${orderId}/${encodeURIComponent((error as Error).message)}`);
       }
     }
   };

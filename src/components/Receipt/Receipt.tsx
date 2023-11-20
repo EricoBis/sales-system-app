@@ -16,9 +16,10 @@ import OrderStatus from "./OrderStatus";
 
 interface ReceiptProps {
   order: string;
+  status: string;
 }
 
-async function Receipt({ order }: ReceiptProps) {
+async function Receipt({ order, status }: ReceiptProps) {
 
   loginIsRequiredServer();
 
@@ -33,7 +34,7 @@ async function Receipt({ order }: ReceiptProps) {
     <div className="flex items-center justify-center h-screen relative translate-y-[-150px]">
       {budget && (
         <Card className="max-w-[500px]">
-          <OrderStatus isBudgetDone={budget.done}/>
+          <OrderStatus isBudgetDone={budget.done} status={status}/>
           <Divider />
           <CardBody>
             <p>Pedido #{budget?.orderId}</p>
