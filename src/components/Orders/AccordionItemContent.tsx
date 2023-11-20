@@ -4,17 +4,16 @@ import { formatValue } from "@/utils/functions/formatting";
 import { getCurrProductOnList } from "@/utils/functions/getProductOnList";
 import { Budget } from "@/utils/types/Budget";
 import { Product } from "@/utils/types/Product";
-import { Button, Divider } from "@nextui-org/react";
+import { Divider } from "@nextui-org/react";
 import ItemCard from "./ItemCard";
+import FinalizeOrderButton from "./FinalizeOrderButton";
 
 interface AccordionItemContentProps {
   budget: Budget;
-  finalizeOrder: (orderId: number) => Promise<void>;
 }
 
 function AccordionItemContent({
-  budget,
-  finalizeOrder,
+  budget
 }: AccordionItemContentProps) {
   const [products, setProducts] = useState<Product[]>([]);
 
@@ -51,13 +50,7 @@ function AccordionItemContent({
         </p>
         <p className="font-semibold">Total: {formatValue(budget.totalCost)}</p>
         {!budget.done && (
-          <Button
-            onPress={() => finalizeOrder(budget.orderId)}
-            className="mt-4"
-            color="primary"
-          >
-            Efetivar pedido
-          </Button>
+          <FinalizeOrderButton orderId={budget.orderId}/>
         )}
       </div>
     </>

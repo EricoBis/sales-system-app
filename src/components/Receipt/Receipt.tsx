@@ -1,5 +1,4 @@
-"use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
 import {
   Card,
@@ -12,36 +11,26 @@ import {
 import { FaRegCheckCircle } from "react-icons/fa";
 import { VscError } from "react-icons/vsc";
 import { getBudget } from "@/services/Budgets/get-budget";
-import { useSession } from "next-auth/react";
-import { Budget } from "@/utils/types/Budget";
-import { Product } from "@/utils/types/Product";
 import { getCartProducts } from "@/services/Products/get-cart-product";
 import { getCurrProductOnList } from "@/utils/functions/getProductOnList";
+import { getServerSession } from "next-auth";
+import { authConfig, loginIsRequiredServer } from "@/lib/auth";
 
 interface ReceiptProps {
   order: string;
 }
 
-function Receipt({ order }: ReceiptProps) {
-  const { data: session } = useSession();
-  const [budget, setBudget] = useState<Budget>();
-  const [products, setProducts] = useState<Product[]>([]);
+async function Receipt({ order }: ReceiptProps) {
 
-  useEffect(() => {
-    if (budget) {
-      getCartProducts(budget.items).then((products) => {
-        setProducts(products);
-      });
-    }
-  }, [budget]);
+  loginIsRequiredServer();
 
-  useEffect(() => {
-    if (session) {
-      getBudget(order, session.user).then((budget) => {
-        setBudget(budget);
-      });
-    }
-  }, []);
+  const session = await getServerSession(authConfig);
+
+  if(!session?.user) return <>Error</>;
+  
+  const budget = await getBudget(order, session.user);
+  const products = await getCartProducts(budget.items);
+
 
   const getOrderStatus = () => {
     if (budget?.done) {
