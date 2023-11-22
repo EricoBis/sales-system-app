@@ -18,7 +18,7 @@ interface OrdersContentProps {
   budgetList: Budget[];
 } 
 
-async function OrdersContent({ budgetList }: OrdersContentProps) {
+function OrdersContent({ budgetList }: OrdersContentProps) {
 
   const getChipStatus = (isBudgetDone: boolean) => {
     return isBudgetDone ? (

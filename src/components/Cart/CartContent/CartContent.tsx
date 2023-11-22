@@ -30,25 +30,24 @@ function CartContent() {
   }, [cart]);
 
   useEffect(() => {
+    const getOrderValue = (itemList: CartItem[]): number => {
+      return itemList.reduce((total, item) => {
+        const currProduct = getCurrProductOnList(item.productId, cartProducts);
+        return currProduct ? total + item.amount * currProduct.price : total;
+      }, 0);
+    };
+
     setOrderValue(getOrderValue(cart.itemList));
   }, [cart, cartProducts]);
-
-  const getOrderValue = (itemList: CartItem[]): number => {
-    return itemList.reduce((total, item) => {
-      const currProduct = getCurrProductOnList(item.productId, cartProducts);
-      return currProduct ? total + item.amount * currProduct.price : total;
-    }, 0);
-  };
 
   const handleProceedToCheckout = async () => {
     setIsBtnLoading(true);
     if (session?.user) {
-       await createBudget(cart, session.user).then(() => {
-        localStorage.setItem('showAlert', 'true');
+      await createBudget(cart, session.user).then(() => {
+        localStorage.setItem("showAlert", "true");
         router.push("/cart/checkout");
-      })
-    }
-    else router.push("api/auth/signin");
+      });
+    } else router.push("api/auth/signin");
   };
 
   return (
@@ -64,7 +63,10 @@ function CartContent() {
           <CardBody className="overflow-visible py-2">
             {cart.itemList &&
               cart.itemList.map((item, index) => {
-                const currProduct = getCurrProductOnList(item.productId, cartProducts);
+                const currProduct = getCurrProductOnList(
+                  item.productId,
+                  cartProducts
+                );
                 return (
                   <CartItemCard
                     key={index}

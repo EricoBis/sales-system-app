@@ -1,7 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import { User, getServerSession } from "next-auth";
-import { useSession } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 
 import CredentialsProvider from "next-auth/providers/credentials";
 import { API_URL } from "@/services/api-url";
@@ -60,10 +59,3 @@ export async function loginIsRequiredServer() {
     if (!session) return redirect("/");
 }
 
-export function loginIsRequiredClient() {
-    if (typeof window !== "undefined") {
-        const session = useSession();
-        const router = useRouter();
-        if (!session) router.push("/");
-    }
-}

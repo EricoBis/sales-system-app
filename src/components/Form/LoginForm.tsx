@@ -18,9 +18,9 @@ export default function Login() {
 
   const router = useRouter();
 
-  useEffect(() => {
-    localStorage.removeItem("showAlert");
-  }, []);
+  // useEffect(() => {
+  //  if(localStorage.getItem("showAlert")) localStorage.removeItem("showAlert");
+  // }, []);
 
   useEffect(() => {
     if (error) setError("");
@@ -104,10 +104,10 @@ export default function Login() {
         </Card>
       </form>
 
-      {localStorage.getItem("showAlert") &&
+      {/* {localStorage.getItem("showAlert") &&
         localStorage.getItem("showAlert") === "true" && (
           <SuccessAlert message="Usuário registrado com sucesso!" />
-        )}
+        )} */}
     </>
   );
 }

@@ -126,7 +126,7 @@ function CheckoutContent({ user }: CheckoutContentProps) {
                   Efetivar mais tarde
                 </Button>
                 <p className="text-tiny text-center text-slate-500 mt-2">
-                  A compra ficará disponível em "Meus Pedidos" por um tempo
+                  A compra ficará disponível em Meus Pedidos por um tempo
                   limitado até ser efetivada.
                 </p>
               </CardBody>

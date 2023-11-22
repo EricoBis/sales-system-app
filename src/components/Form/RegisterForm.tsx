@@ -45,7 +45,7 @@ function RegisterForm() {
         }
       )
       .then(function (response) {
-        localStorage.setItem('showAlert', 'true');
+        // localStorage.setItem('showAlert', 'true');
         router.push("api/auth/signin");
       })
       .catch(function (error) {
